@@ -41,10 +41,8 @@ func TestConfig(t *testing.T) {
 		},
 	}
 
-	parser := NewParser[exampleConfig]([]string{"./example_config.yaml"})
-
 	var cfg exampleConfig
-	err := parser.Parse(&cfg, defaults)
+	err := Parse([]string{"./example_config.yaml"}, &cfg, defaults)
 	assert.NoError(t, err)
 
 	assert.Equal(t, "value1", cfg.Field1)

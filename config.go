@@ -15,23 +15,11 @@ import (
 // Its used in koanf.New call.
 var delim = "."
 
-// Parser exposes a `Parse` method to load data from config files.
-type Parser[T any] struct {
-	files []string
-}
-
-// NewParser returns a new parser.
-func NewParser[T any](configFiles []string) *Parser[T] {
-	return &Parser[T]{
-		files: configFiles,
-	}
-}
-
 // Parse will read all possible files loading them to provided `cfg` in order:
 // 1. Defaults
 // 2. Files
 // Each step overrides the last.
-func (p *Parser[T]) Parse(cfg *T, defaults T) error {
+func Parse[T any](configFiles []string, cfg *T, defaults T) error {
 	k := koanf.New(delim)
 
 	err := k.Load(structs.Provider(defaults, "koanf"), nil)
@@ -39,7 +27,7 @@ func (p *Parser[T]) Parse(cfg *T, defaults T) error {
 		return fmt.Errorf("error loading defaults when loading config: %w", err)
 	}
 
-	for _, path := range p.files {
+	for _, path := range configFiles {
 		parser, err := getParser(path)
 		if err != nil {
 			return fmt.Errorf("error getting parser when loading config: %w", err)

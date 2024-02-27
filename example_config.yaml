@@ -1,0 +1,7 @@
+field1: "value1"
+struct1:
+  subfield1: 3.14
+struct2:
+  subfield3:
+    key1: "value2"
+    key2: "value3"
